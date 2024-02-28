@@ -1,3 +1,3 @@
-module github.com/joatmon08/chrome-remote-desktop-image/unit
+module github.com/vsseclab/cdr-image/unit
 
 go 1.13
