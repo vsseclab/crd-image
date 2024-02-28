@@ -11,7 +11,7 @@ jobs:
   setup:
     <<: *defaults
     docker:
-      - image: joatmon08/circleci-hashistack
+      - image: vsseclab/circlecihastack
     steps:
       - checkout
       - run: mkdir -p workspace
@@ -26,7 +26,7 @@ jobs:
   unit:
     <<: *defaults
     docker:
-      - image: joatmon08/circleci-hashistack
+      - image: vsseclab/circlecihastack
     steps:
       - checkout
       - attach_workspace:
@@ -38,7 +38,7 @@ jobs:
   build:
     <<: *defaults
     docker:
-      - image: joatmon08/circleci-hashistack
+      - image: vsseclab/circlecihastack
     steps:
       - checkout
       - attach_workspace:
@@ -57,10 +57,10 @@ workflows:
             - setup
           filters:
             branches:
-              only: master
+              only: main
       - build:
           requires:
             - unit
           filters:
             branches:
-              only: master
+              only: main
