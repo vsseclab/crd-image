@@ -1,0 +1,47 @@
+{
+  "variables": {
+    "username": "{{env `TF_VAR_crd_user`}}",
+    "gcloud_zone": "{{env `GOOGLE_COMPUTE_ZONE`}}",
+    "commit_hash": "{{env `COMMIT_HASH`}}",
+    "project": "{{env `GOOGLE_PROJECT`}}"
+  },
+  "builders": [
+    {
+      "image_name": "chrome-remote-desktop-debian-9-{{user `commit_hash`}}",
+      "instance_name": "crd-test-{{uuid}}",
+      "image_family": "crd-debian-9",
+      "type": "googlecompute",
+      "project_id": "{{user `project`}}",
+      "source_image_family": "debian-9",
+      "source_image_project_id": "debian-cloud",
+      "ssh_username": "{{user `username`}}",
+      "zone": "{{user `gcloud_zone`}}",
+      "machine_type": "n1-standard-1",
+      "labels": {
+        "builder": "packer",
+        "owner": "{{user `username`}}"
+      },
+      "image_labels": {
+        "builder": "packer",
+        "owner": "{{user `username`}}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo bash -c '{{.Vars}} {{.Path}}'",
+      "scripts": [
+        "./install-desktop.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "execute_command": "{{.Vars}} bash '{{.Path}}'",
+      "scripts": [
+        "./install-devtools.sh",
+        "./test.sh"
+      ]
+    }
+  ]
+}
