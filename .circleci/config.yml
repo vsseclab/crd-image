@@ -1,10 +1,10 @@
 version: 2
 
 defaults: &defaults
-  working_directory: /tmp/chrome-remote-desktop-image
+  working_directory: /tmp/crd-image
   environment:
     GOOGLE_COMPUTE_ZONE: us-central1-a
-    GOOGLE_APPLICATION_CREDENTIALS: /tmp/chrome-remote-desktop-image/workspace/packer-builder.json
+    GOOGLE_APPLICATION_CREDENTIALS: /tmp/crd-image/workspace/packer-builder.json
 
 jobs:
 
@@ -30,7 +30,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/chrome-remote-desktop-image/workspace
+          at: /tmp/crd-image/workspace
       - run:
           name: Run some checks to ensure the image is ready to build
           command: COMMIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7) make unit
@@ -42,7 +42,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/chrome-remote-desktop-image/workspace
+          at: /tmp/crd-image/workspace
       - run:
           name: Build and test image
           command: cd packer && COMMIT_HASH=$(echo $CIRCLE_SHA1 | cut -c -7) packer build desktop.json
